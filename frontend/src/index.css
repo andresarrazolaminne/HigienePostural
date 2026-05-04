@@ -1,0 +1,10 @@
+/* Reset mínimo; estilos de interfaz en ui.css (importado desde App.tsx) */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
