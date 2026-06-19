@@ -1,6 +1,9 @@
 import { useEffect, useState, type FormEvent } from "react"
+import { Link } from "react-router-dom"
 import * as companiesApi from "../../api/companies"
 import * as sitesApi from "../../api/sites"
+import { PageHeader } from "../../components/ui/PageHeader"
+import { Panel } from "../../components/ui/Panel"
 import type { Company, Site } from "../../api/types"
 
 export function AdminSitesPage() {
@@ -65,19 +68,25 @@ export function AdminSitesPage() {
 
   return (
     <div className="page-pad">
-      <h2>Sedes</h2>
-      <p className="muted">Cada sede pertenece a una empresa. Los operadores registran evaluaciones por sede.</p>
-      {error && <p className="form-error">{error}</p>}
+      <PageHeader
+        kicker="Plataforma"
+        title="Sedes"
+        lead="Ubicaciones físicas donde los inspectores realizan evaluaciones ergonómicas."
+      />
+      {error && (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      )}
 
-      <section className="panel">
-        <h3>Filtro</h3>
+      <Panel title="Filtro">
         <label className="inline-label">
           Empresa
           <select
             value={filterCo === "" ? "" : String(filterCo)}
             onChange={(e) => setFilterCo(e.target.value === "" ? "" : Number(e.target.value))}
           >
-            <option value="">Todas</option>
+            <option value="">Todas las empresas</option>
             {companies.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -85,10 +94,9 @@ export function AdminSitesPage() {
             ))}
           </select>
         </label>
-      </section>
+      </Panel>
 
-      <section className="panel">
-        <h3>Nueva sede</h3>
+      <Panel title="Nueva sede" subtitle="Asigna la sede a una empresa existente.">
         <form className="grid-form" onSubmit={onCreate}>
           <label>
             Empresa
@@ -106,7 +114,7 @@ export function AdminSitesPage() {
             </select>
           </label>
           <label>
-            Nombre sede
+            Nombre de la sede
             <input value={name} onChange={(e) => setName(e.target.value)} required />
           </label>
           <label>
@@ -119,10 +127,9 @@ export function AdminSitesPage() {
             </button>
           </div>
         </form>
-      </section>
+      </Panel>
 
-      <section className="panel">
-        <h3>Listado</h3>
+      <Panel title="Listado" subtitle={`${sites.length} sede${sites.length === 1 ? "" : "s"}`}>
         <ul className="card-list">
           {sites.map((s) => (
             <li key={s.id} className="card-list-item">
@@ -133,13 +140,18 @@ export function AdminSitesPage() {
                   {s.address ? ` · ${s.address}` : ""}
                 </div>
               </div>
-              <button type="button" className="btn danger sm" onClick={() => void onDelete(s)}>
-                Eliminar
-              </button>
+              <div className="row-actions wrap">
+                <Link to={`/admin/sedes/${s.id}/informe`} className="btn primary sm">
+                  Ver informe
+                </Link>
+                <button type="button" className="btn danger sm" onClick={() => void onDelete(s)}>
+                  Eliminar
+                </button>
+              </div>
             </li>
           ))}
         </ul>
-      </section>
+      </Panel>
     </div>
   )
 }

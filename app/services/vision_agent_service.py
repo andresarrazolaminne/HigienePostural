@@ -26,9 +26,17 @@ Reglas:
 - `rula_grand_score` solo si puedes justificarlo con lo visible (1-7). Si no, `null`.
 - `rosa_summary_score` es un resumen interno simplificado 1-10; `null` si no hay suficiente información.
 - `overall_risk_score` (0-100) debe ser coherente con la severidad global observada.
-- `primary_issue` debe ser una frase breve del problema más relevante.
-- **Idioma**: todo texto en lenguaje natural visible para el usuario (`primary_issue` y cualquier explicación breve)
-  debe estar en **español** claro y profesional (no inglés).
+- `primary_issue` debe ser una frase breve del problema ergonómico más relevante.
+- **Orden y Aseo (apartado adicional, score independiente)**:
+  - Evalúa solo lo visible: orden de superficies, limpieza, cables/obstáculos, distractores visuales
+    (móvil, pantallas no laborales, objetos personales abundantes) e iluminación/entorno visual del puesto.
+  - No evalúes ruido ni distractores sonoros (no son observables en foto).
+  - `orden_aseo_score` (0-100): 100 = puesto muy ordenado, limpio y sin distractores; 0 = caos o riesgo claro.
+  - `orden_aseo_issue`: frase breve del principal problema de orden/aseo.
+  - `orden_aseo_observations`: lista de 2-5 bullets cortos en español con hallazgos concretos.
+  - Para `desorden_superficie`, `residuos_limpieza`, `distractores_visuales`, `cables_obstaculos`,
+    `iluminacion_entorno` usa: none | mild | moderate | severe | not_observable.
+- **Idioma**: todo texto en lenguaje natural visible para el usuario debe estar en **español** claro y profesional.
 """
 
 
@@ -57,8 +65,9 @@ class VisionAgentService:
                             {
                                 "type": "text",
                                 "text": (
-                                    "Evalúa el puesto de trabajo en esta imagen con RULA y ROSA y devuelve el JSON estructurado. "
-                                    "El campo primary_issue y cualquier descripción breve deben estar en español."
+                                    "Evalúa el puesto con RULA y ROSA, y el apartado de Orden y Aseo "
+                                    "(orden_aseo_score y observaciones). Devuelve el JSON estructurado. "
+                                    "Todo el texto visible para el usuario en español."
                                 ),
                             },
                             {"type": "image_url", "image_url": {"url": data_url}},

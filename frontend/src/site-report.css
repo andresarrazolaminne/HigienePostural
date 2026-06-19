@@ -1,0 +1,343 @@
+.site-report-page {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.site-report-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.site-report-toolbar-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.site-report-document {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.site-report-cover {
+  padding: 1.25rem 1.35rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--gradient-card);
+  box-shadow: var(--shadow-md);
+}
+
+.site-report-cover-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.site-report-cover-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.65rem;
+  line-height: 1.15;
+}
+
+.site-report-cover-address {
+  margin: 0 0 0.5rem;
+}
+
+.site-report-risk-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 1rem;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.site-report-risk-badge--good {
+  background: rgba(21, 128, 61, 0.1);
+  border-color: rgba(21, 128, 61, 0.25);
+}
+
+.site-report-risk-badge--mid {
+  background: rgba(202, 138, 4, 0.12);
+  border-color: rgba(202, 138, 4, 0.3);
+}
+
+.site-report-risk-badge--high {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
+.site-report-risk-badge--neutral {
+  background: var(--card);
+}
+
+.site-report-risk-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.site-report-risk-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.site-report-generated {
+  margin: 0.75rem 0 0;
+}
+
+.site-report-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.65rem;
+}
+
+.site-report-kpi {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.site-report-kpi-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.site-report-kpi-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.site-report-section-title {
+  margin: 0 0 0.65rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.site-report-section {
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+.site-report-table-wrap {
+  overflow-x: auto;
+}
+
+.site-report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.site-report-table th,
+.site-report-table td {
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-report-table th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.site-report-bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.site-report-bar-row {
+  display: grid;
+  grid-template-columns: minmax(100px, 1.4fr) 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.site-report-bar-label {
+  line-height: 1.25;
+}
+
+.site-report-bar-track {
+  height: 0.55rem;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.site-report-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  min-width: 2px;
+}
+
+.site-report-bar-fill--risk {
+  background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+}
+
+.site-report-bar-fill--orden {
+  background: var(--gradient-accent);
+}
+
+.site-report-bar-count {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.site-report-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 720px) {
+  .site-report-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.site-report-actions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.site-report-action-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-report-action-item:last-child {
+  border-bottom: none;
+}
+
+.site-report-action-detail {
+  margin: 0.25rem 0 0;
+}
+
+.site-report-sessions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-report-session-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.site-report-session-row:last-child {
+  border-bottom: none;
+}
+
+.site-report-session-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.site-report-print-note {
+  margin-top: 0.5rem;
+}
+
+.site-ranking-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.site-ranking-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-ranking-item:last-child {
+  border-bottom: none;
+}
+
+.site-ranking-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  min-width: 0;
+}
+
+@media print {
+  .no-print,
+  .sidebar,
+  .mobile-nav,
+  .site-report-toolbar {
+    display: none !important;
+  }
+
+  .site-report-page {
+    max-width: none;
+    padding: 0 !important;
+  }
+
+  .main-area {
+    padding-bottom: 0 !important;
+  }
+
+  .site-report-cover,
+  .site-report-section {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+
+  .site-report-evidence {
+    break-before: page;
+  }
+
+  .evidence-detail-sheet {
+    display: none !important;
+  }
+}

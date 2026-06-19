@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react"
-import { TOKEN_KEY } from "../api/http"
+﻿import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react"
+import { TOKEN_KEY, formatFetchError } from "../api/http"
 import * as authApi from "../api/auth"
 import type { User } from "../api/types"
 import { AuthContext } from "./authContext"
@@ -22,10 +22,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const u = await authApi.fetchMe()
       setUser(u)
-    } catch {
-      setUser(null)
-      localStorage.removeItem(TOKEN_KEY)
-      setToken(null)
+    } catch (err) {
+      const msg = formatFetchError(err)
+      if (/failed to fetch|conectar|503|502/i.test(msg)) {
+        console.warn("auth/me:", msg)
+      } else {
+        setUser(null)
+        localStorage.removeItem(TOKEN_KEY)
+        setToken(null)
+      }
     } finally {
       setLoading(false)
     }
@@ -44,6 +49,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return u
   }, [])
 
+  const loginWithCode = useCallback(async (code: string) => {
+    const { access_token } = await authApi.loginCodeRequest(code)
+    localStorage.setItem(TOKEN_KEY, access_token)
+    setToken(access_token)
+    const u = await authApi.fetchMe()
+    setUser(u)
+    return u
+  }, [])
+
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY)
     setToken(null)
@@ -51,9 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo(
-    () => ({ token, user, loading, login, logout, refreshMe }),
-    [token, user, loading, login, logout, refreshMe],
+    () => ({ token, user, loading, login, loginWithCode, logout, refreshMe }),
+    [token, user, loading, login, loginWithCode, logout, refreshMe],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
+

@@ -25,9 +25,27 @@ export async function updateUser(
   return parseJson<User>(res)
 }
 
+export async function regeneratePin(id: number): Promise<User> {
+  const res = await apiFetch(`/users/${id}/pin`, { method: "POST" })
+  return parseJson<User>(res)
+}
+
 export async function deleteUser(id: number): Promise<void> {
   const res = await apiFetch(`/users/${id}`, { method: "DELETE" })
   if (!res.ok) {
     await parseJson(res)
   }
+}
+
+export async function getExpertCompanies(userId: number): Promise<number[]> {
+  const res = await apiFetch(`/users/${userId}/expert-companies`)
+  return parseJson<number[]>(res)
+}
+
+export async function setExpertCompanies(userId: number, companyIds: number[]): Promise<number[]> {
+  const res = await apiFetch(`/users/${userId}/expert-companies`, {
+    method: "PUT",
+    body: JSON.stringify({ company_ids: companyIds }),
+  })
+  return parseJson<number[]>(res)
 }

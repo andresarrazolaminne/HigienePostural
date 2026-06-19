@@ -2,8 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
+// Docker/Lightsail: VITE_BASE=/  |  Tauri/Capacitor: VITE_BASE=./ (default en npm run build)
 export default defineConfig({
   plugins: [react()],
-  // Rutas relativas: necesario para Tauri y para Capacitor (file/capacitor)
-  base: "./",
+  base: process.env.VITE_BASE ?? "./",
 })

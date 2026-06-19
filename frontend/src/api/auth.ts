@@ -13,6 +13,14 @@ export async function loginRequest(email: string, password: string): Promise<{ a
   return parseJson<{ access_token: string }>(res)
 }
 
+export async function loginCodeRequest(code: string): Promise<{ access_token: string }> {
+  const res = await apiFetch("/auth/login-code", {
+    method: "POST",
+    body: JSON.stringify({ code }),
+  })
+  return parseJson<{ access_token: string }>(res)
+}
+
 export async function fetchMe(): Promise<User> {
   const res = await apiFetch("/auth/me")
   return parseJson<User>(res)

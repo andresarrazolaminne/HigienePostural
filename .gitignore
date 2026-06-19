@@ -1,4 +1,6 @@
 .env
+lightsail/containers.generated.json
+lightsailctl.exe
 .venv/
 uploads/
 __pycache__/

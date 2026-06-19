@@ -1,3 +1,4 @@
+import secrets
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
@@ -15,6 +16,11 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
+
+
+def generate_pin(length: int = 6) -> str:
+    """Genera una clave de ingreso numérica aleatoria (PIN)."""
+    return "".join(secrets.choice("0123456789") for _ in range(length))
 
 
 def create_access_token(subject: str, extra_claims: dict[str, Any] | None = None) -> str:

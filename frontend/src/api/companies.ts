@@ -1,8 +1,18 @@
 import { apiFetch, parseJson } from "./http"
 import type { Company } from "./types"
 
+export async function getMyCompany(): Promise<Company> {
+  const res = await apiFetch("/companies/mine")
+  return parseJson<Company>(res)
+}
+
 export async function listCompanies(): Promise<Company[]> {
   const res = await apiFetch("/companies")
+  return parseJson<Company[]>(res)
+}
+
+export async function listAssignedCompanies(): Promise<Company[]> {
+  const res = await apiFetch("/companies/assigned")
   return parseJson<Company[]>(res)
 }
 

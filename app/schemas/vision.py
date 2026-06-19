@@ -2,6 +2,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
+SeverityLevel = Literal["none", "mild", "moderate", "severe", "not_observable"]
+
 
 class VisionAnalysisResult(BaseModel):
     """
@@ -55,6 +57,39 @@ class VisionAnalysisResult(BaseModel):
     observation_confidence: Literal["low", "medium", "high"] = Field(
         default="medium",
         description="Confianza en la observación dada la imagen.",
+    )
+
+    # Apartado Orden y Aseo (score independiente del riesgo ergonómico)
+    orden_aseo_score: float = Field(
+        ...,
+        ge=0,
+        le=100,
+        description="Puntuación de orden, limpieza y entorno 0-100 (100 = excelente).",
+    )
+    orden_aseo_issue: str = Field(
+        ...,
+        max_length=512,
+        description="Problema principal de orden/aseo en una frase breve (español).",
+    )
+    orden_aseo_observations: list[str] = Field(
+        default_factory=list,
+        max_length=6,
+        description="Observaciones concretas sobre orden, limpieza y distractores visuales.",
+    )
+    desorden_superficie: SeverityLevel = Field(
+        description="Desorden en escritorio/superficies de trabajo visibles.",
+    )
+    residuos_limpieza: SeverityLevel = Field(
+        description="Basura, polvo o falta de limpieza visible.",
+    )
+    distractores_visuales: SeverityLevel = Field(
+        description="Objetos no laborales que distraen (móvil, TV, decoración excesiva, etc.).",
+    )
+    cables_obstaculos: SeverityLevel = Field(
+        description="Cables sueltos u obstáculos en piso o zona de paso visibles.",
+    )
+    iluminacion_entorno: SeverityLevel = Field(
+        description="Iluminación deficiente, desorden visual por luz/reflejos en el puesto.",
     )
 
     @field_validator("rula_grand_score")

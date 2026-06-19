@@ -1,0 +1,29 @@
+{
+  "containers": {
+    "app": {
+      "image": ":oya-app.app.latest",
+      "environment": {
+        "ENVIRONMENT": "production",
+        "DATABASE_URL": "sqlite:////data/ergonomia.db",
+        "UPLOAD_DIR": "/data/uploads",
+        "JWT_ALGORITHM": "HS256",
+        "ACCESS_TOKEN_EXPIRE_MINUTES": "60"
+      },
+      "ports": {
+        "80": "HTTP"
+      }
+    }
+  },
+  "publicEndpoint": {
+    "containerName": "app",
+    "containerPort": 80,
+    "healthCheck": {
+      "path": "/health",
+      "successCodes": "200-499",
+      "intervalSeconds": 10,
+      "timeoutSeconds": 5,
+      "healthyThreshold": 2,
+      "unhealthyThreshold": 5
+    }
+  }
+}

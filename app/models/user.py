@@ -14,7 +14,9 @@ if TYPE_CHECKING:
 
 class UserRole(str, enum.Enum):
     super_admin = "super_admin"
-    operator = "operator"
+    company_admin = "company_admin"
+    expert = "expert"
+    user = "user"
 
 
 class User(Base):
@@ -24,6 +26,10 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+    # Clave de ingreso numérica (PIN) para login simplificado. Única; opcional.
+    access_pin: Mapped[str | None] = mapped_column(
+        String(12), unique=True, index=True, nullable=True
+    )
     role: Mapped[UserRole] = mapped_column(
         SAEnum(
             UserRole,
@@ -32,7 +38,7 @@ class User(Base):
             length=32,
         ),
         nullable=False,
-        default=UserRole.operator,
+        default=UserRole.user,
     )
     baseline_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     company_id: Mapped[int | None] = mapped_column(

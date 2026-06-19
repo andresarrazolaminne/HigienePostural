@@ -1,5 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react"
 import * as companiesApi from "../../api/companies"
+import { PageHeader } from "../../components/ui/PageHeader"
+import { Panel } from "../../components/ui/Panel"
 import type { Company } from "../../api/types"
 
 export function AdminCompaniesPage() {
@@ -56,12 +58,18 @@ export function AdminCompaniesPage() {
 
   return (
     <div className="page-pad">
-      <h2>Empresas</h2>
-      <p className="muted">Las sedes pertenecen a una empresa. Los operadores se asocian a una empresa.</p>
-      {error && <p className="form-error">{error}</p>}
+      <PageHeader
+        kicker="Plataforma"
+        title="Empresas"
+        lead="Organizaciones clientes. Las sedes y usuarios se vinculan a cada empresa."
+      />
+      {error && (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      )}
 
-      <section className="panel">
-        <h3>Nueva empresa</h3>
+      <Panel title="Nueva empresa" subtitle="Registra una organización para asignar sedes e inspectores.">
         <form className="inline-form" onSubmit={onCreate}>
           <input
             placeholder="Nombre de la empresa"
@@ -73,19 +81,18 @@ export function AdminCompaniesPage() {
             Añadir
           </button>
         </form>
-      </section>
+      </Panel>
 
-      <section className="panel">
-        <h3>Listado</h3>
+      <Panel title="Listado" subtitle={`${companies.length} empresa${companies.length === 1 ? "" : "s"} registrada${companies.length === 1 ? "" : "s"}`}>
         <ul className="card-list">
           {companies.map((c) => (
             <li key={c.id} className="card-list-item">
               <div>
                 <strong>{c.name}</strong>
-                <span className="muted small"> id {c.id}</span>
+                <span className="muted small"> · id {c.id}</span>
               </div>
               <div className="row-actions">
-                <button type="button" className="btn sm" onClick={() => void onRename(c)}>
+                <button type="button" className="btn secondary sm" onClick={() => void onRename(c)}>
                   Renombrar
                 </button>
                 <button type="button" className="btn danger sm" onClick={() => void onDelete(c)}>
@@ -95,7 +102,7 @@ export function AdminCompaniesPage() {
             </li>
           ))}
         </ul>
-      </section>
+      </Panel>
     </div>
   )
 }

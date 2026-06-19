@@ -9,6 +9,7 @@ from typing import Sequence, Union
 
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy import inspect
 
 # revision identifiers, used by Alembic.
 revision: str = "3c1ea9bbb771"
@@ -18,16 +19,11 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def _table_exists(bind, name: str) -> bool:
-    r = bind.execute(
-        sa.text("SELECT 1 FROM sqlite_master WHERE type='table' AND name=:n"),
-        {"n": name},
-    ).fetchone()
-    return r is not None
+    return name in inspect(bind).get_table_names()
 
 
 def _column_exists(bind, table: str, col: str) -> bool:
-    rows = bind.execute(sa.text(f"PRAGMA table_info({table})")).fetchall()
-    return any(row[1] == col for row in rows)
+    return col in {c["name"] for c in inspect(bind).get_columns(table)}
 
 
 def upgrade() -> None:
@@ -60,7 +56,7 @@ def upgrade() -> None:
             sa.Column(
                 "created_at",
                 sa.DateTime(timezone=True),
-                server_default=sa.text("(CURRENT_TIMESTAMP)"),
+                server_default=sa.text("CURRENT_TIMESTAMP"),
                 nullable=False,
             ),
         )

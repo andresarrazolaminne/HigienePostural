@@ -87,3 +87,93 @@ export function visionSummaryRows(raw: Record<string, unknown> | null | undefine
 
   return rows
 }
+
+const severity: Record<string, string> = {
+  none: "Sin hallazgo",
+  mild: "Leve",
+  moderate: "Moderado",
+  severe: "Severo",
+  not_observable: "No observable",
+}
+
+function mapSeverity(v: unknown): string {
+  if (typeof v !== "string") {
+    return fmt(v)
+  }
+  return severity[v] ?? v
+}
+
+/** Etiqueta en español para un nivel de severidad ("moderate" → "Moderado"). */
+export function severityLabel(v: string): string {
+  return severity[v] ?? v
+}
+
+/** Apartado Orden y Aseo desde raw_ai_json (evaluaciones nuevas). */
+export function ordenAseoSummaryRows(
+  raw: Record<string, unknown> | null | undefined,
+): { label: string; value: string }[] {
+  if (!raw || typeof raw !== "object" || raw.orden_aseo_score == null) {
+    return []
+  }
+  const rows: { label: string; value: string }[] = []
+  const score = Number(raw.orden_aseo_score)
+  if (Number.isFinite(score)) {
+    rows.push({ label: "Orden y aseo (IA)", value: `${Math.round(score)}/100` })
+  }
+  if (typeof raw.orden_aseo_issue === "string" && raw.orden_aseo_issue.trim()) {
+    rows.push({ label: "Hallazgo principal (orden)", value: raw.orden_aseo_issue.trim() })
+  }
+  const flags: [string, string][] = [
+    ["desorden_superficie", "Desorden en superficie"],
+    ["residuos_limpieza", "Limpieza / residuos"],
+    ["distractores_visuales", "Distractores visuales"],
+    ["cables_obstaculos", "Cables y obstáculos"],
+    ["iluminacion_entorno", "Iluminación y entorno"],
+  ]
+  for (const [key, label] of flags) {
+    if (key in raw) {
+      rows.push({ label, value: mapSeverity(raw[key]) })
+    }
+  }
+  return rows
+}
+
+export function ordenAseoObservations(
+  detail: { orden_aseo_observations?: string[]; raw_ai_json?: Record<string, unknown> | null },
+): string[] {
+  if (detail.orden_aseo_observations?.length) {
+    return detail.orden_aseo_observations
+  }
+  const raw = detail.raw_ai_json
+  if (raw && Array.isArray(raw.orden_aseo_observations)) {
+    return raw.orden_aseo_observations.map((x) => String(x)).filter(Boolean)
+  }
+  return []
+}
+
+export function ordenAseoScore(
+  detail: { orden_aseo_score?: number | null; raw_ai_json?: Record<string, unknown> | null },
+): number | null {
+  if (detail.orden_aseo_score != null && Number.isFinite(detail.orden_aseo_score)) {
+    return detail.orden_aseo_score
+  }
+  const raw = detail.raw_ai_json
+  if (raw && raw.orden_aseo_score != null) {
+    const n = Number(raw.orden_aseo_score)
+    return Number.isFinite(n) ? n : null
+  }
+  return null
+}
+
+export function ordenAseoIssue(
+  detail: { orden_aseo_issue?: string | null; raw_ai_json?: Record<string, unknown> | null },
+): string | null {
+  if (detail.orden_aseo_issue?.trim()) {
+    return detail.orden_aseo_issue.trim()
+  }
+  const raw = detail.raw_ai_json
+  if (raw && typeof raw.orden_aseo_issue === "string" && raw.orden_aseo_issue.trim()) {
+    return raw.orden_aseo_issue.trim()
+  }
+  return null
+}

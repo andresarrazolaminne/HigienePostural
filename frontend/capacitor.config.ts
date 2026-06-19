@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.higienepostural.app',
-  appName: 'Higiene Postural',
+  appName: 'Husky',
   webDir: 'dist'
 };
 
