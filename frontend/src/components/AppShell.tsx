@@ -1,5 +1,5 @@
 import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom"
-import { useCallback } from "react"
+import { useCallback, type ReactNode } from "react"
 import { useAuth } from "../auth/useAuth"
 import { AppLogo } from "./AppLogo"
 import { useBranding } from "../branding/BrandingProvider"
@@ -10,6 +10,7 @@ export type NavItem = {
   label: string
   end?: boolean
   icon?: string
+  iconNode?: ReactNode
 }
 
 type Props = {
@@ -71,11 +72,15 @@ export function AppShell({ allowedRole, nav, areaLabel: _areaLabel }: Props) {
         <nav className="sidebar-nav">
           {nav.map((item) => (
             <NavLink key={item.to} to={item.to} end={item.end} className={navCls}>
-              {item.icon && (
+              {item.iconNode ? (
+                <span className="navlink-icon" aria-hidden>
+                  {item.iconNode}
+                </span>
+              ) : item.icon ? (
                 <span className="navlink-icon" aria-hidden>
                   {item.icon}
                 </span>
-              )}
+              ) : null}
               {item.label}
             </NavLink>
           ))}
@@ -88,7 +93,11 @@ export function AppShell({ allowedRole, nav, areaLabel: _areaLabel }: Props) {
       <nav className="mobile-nav" aria-label="Navegación móvil">
         {nav.map((item) => (
           <NavLink key={item.to} to={item.to} end={item.end} className={navCls}>
-            {item.icon && <span aria-hidden>{item.icon}</span>}
+            {item.iconNode ? (
+              <span aria-hidden>{item.iconNode}</span>
+            ) : item.icon ? (
+              <span aria-hidden>{item.icon}</span>
+            ) : null}
             <span className="mobile-nav-label">{item.label}</span>
           </NavLink>
         ))}

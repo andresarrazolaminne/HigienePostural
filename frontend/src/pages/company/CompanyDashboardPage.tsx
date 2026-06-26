@@ -1,70 +1,54 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
-import * as assessmentsApi from "../../api/assessments"
 import * as companiesApi from "../../api/companies"
 import * as sessionsApi from "../../api/sessions"
-import * as sitesApi from "../../api/sites"
 import * as usersApi from "../../api/users"
 import { LoadingBlock } from "../../components/ui/LoadingBlock"
 import { PageHeader } from "../../components/ui/PageHeader"
 import { Panel } from "../../components/ui/Panel"
 import { StepGuide } from "../../components/ui/StepGuide"
-import type { AssessmentListItem, Company, Site } from "../../api/types"
+import type { Company } from "../../api/types"
 import { siteStats } from "../../lib/aggregates"
 import { formatScore100 } from "../../lib/score"
 import { scoreToRank } from "../../lib/gameRank"
-import {
-  companyXp,
-  companyAchievements,
-  levelFromXp,
-  COMPANY_TITLES,
-  type CompanyMetrics,
-} from "../../lib/gamification"
 import { LevelProgress } from "../../components/game/LevelProgress"
-import { AchievementBadges } from "../../components/game/AchievementBadges"
+import { useCompanyGamification } from "../../lib/useCompanyGamification"
 
 export function CompanyDashboardPage() {
+  const {
+    siteList,
+    assessments,
+    error: gamError,
+    loading: gamLoading,
+    avgScore,
+    companyMetrics,
+    programLevel,
+  } = useCompanyGamification()
+
   const [company, setCompany] = useState<Company | null>(null)
-  const [siteList, setSiteList] = useState<Site[]>([])
   const [users, setUsers] = useState(0)
   const [sessions, setSessions] = useState(0)
-  const [assessments, setAssessments] = useState<AssessmentListItem[]>([])
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [extraLoading, setExtraLoading] = useState(true)
 
   useEffect(() => {
     void (async () => {
       try {
-        const [co, st, us, sess, asm] = await Promise.all([
+        const [co, us, sess] = await Promise.all([
           companiesApi.getMyCompany(),
-          sitesApi.listSites(),
           usersApi.listUsers(),
           sessionsApi.listCompanySessions(),
-          assessmentsApi.listCompanyAssessments(),
         ])
         setCompany(co)
-        setSiteList(st)
         setUsers(us.length)
         setSessions(sess.length)
-        setAssessments(asm)
       } catch (e) {
         setError(String(e))
       } finally {
-        setLoading(false)
+        setExtraLoading(false)
       }
     })()
   }, [])
-
-  const avgScore = useMemo(() => {
-    const completed = assessments.filter(
-      (a) => a.processing_status === "completed" && a.calculated_score != null,
-    )
-    if (completed.length === 0) {
-      return null
-    }
-    const sum = completed.reduce((a, b) => a + (b.calculated_score as number), 0)
-    return sum / completed.length
-  }, [assessments])
 
   const pendingReview = useMemo(
     () => assessments.filter((a) => !a.has_professional_notes).length,
@@ -82,27 +66,8 @@ export function CompanyDashboardPage() {
   }, [siteList, assessments])
 
   const worstSites = siteRanking.slice(0, 5)
-
-  const companyMetrics = useMemo<CompanyMetrics>(() => {
-    const completedItems = assessments.filter(
-      (a) => a.processing_status === "completed" && a.calculated_score != null,
-    )
-    const coveredSites = new Set(completedItems.map((a) => a.site_id)).size
-    const reviewed = assessments.filter((a) => a.has_professional_notes).length
-    return {
-      totalSites: siteList.length,
-      coveredSites,
-      completed: completedItems.length,
-      reviewed,
-      avgScore,
-    }
-  }, [assessments, siteList, avgScore])
-
-  const programLevel = useMemo(
-    () => levelFromXp(companyXp(companyMetrics), COMPANY_TITLES),
-    [companyMetrics],
-  )
-  const programAchievements = useMemo(() => companyAchievements(companyMetrics), [companyMetrics])
+  const loading = gamLoading || extraLoading
+  const displayError = error ?? gamError
 
   if (loading) {
     return (
@@ -120,7 +85,7 @@ export function CompanyDashboardPage() {
         lead="Supervisa sedes, equipo e informes ergonómicos de tus inspectores."
       />
 
-      {error && <p className="form-error" role="alert">{error}</p>}
+      {displayError && <p className="form-error" role="alert">{displayError}</p>}
 
       {pendingReview > 0 && (
         <div className="alert-banner alert-banner-warn" role="status">
@@ -157,8 +122,8 @@ export function CompanyDashboardPage() {
             level={programLevel}
             roleLabel="Programa HSEQ"
             meta={`${companyMetrics.coveredSites}/${Math.max(companyMetrics.totalSites, 1)} sedes · ${companyMetrics.reviewed} revisado${companyMetrics.reviewed === 1 ? "" : "s"}`}
+            compact
           />
-          <AchievementBadges achievements={programAchievements} title="Hitos del programa" />
         </div>
       </Panel>
 

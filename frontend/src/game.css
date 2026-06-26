@@ -761,8 +761,8 @@
 .inspector-progress-block {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  margin: 0.25rem 0 1.1rem;
+  gap: 0.5rem;
+  margin: 0.15rem 0 0.85rem;
 }
 
 .program-progress-block {
@@ -914,12 +914,178 @@
   margin-top: 0.35rem;
 }
 
-/* Logros */
-.achievements {
+/* Variante compacta (~mitad de alto) para home */
+.level-card--compact {
+  padding: 0.4rem 0.7rem;
+  gap: 0.5rem;
+  border-radius: calc(var(--radius-sm) + 2px);
+}
+
+.level-card--compact .level-card-badge {
+  width: 2.15rem;
+  height: 2.15rem;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+}
+
+.level-card--compact .level-card-badge-num {
+  font-size: 0.9rem;
+}
+
+.level-card--compact .level-card-badge-tag {
+  font-size: 0.38rem;
+  letter-spacing: 0.1em;
+}
+
+.level-card--compact .level-card-top {
+  margin-bottom: 0.15rem;
+  gap: 0.35rem;
+}
+
+.level-card--compact .level-card-title {
+  font-size: 0.84rem;
+}
+
+.level-card--compact .level-card-role {
+  font-size: 0.68rem;
+}
+
+.level-card--compact .level-bar {
+  height: 4px;
+}
+
+.level-card--compact .level-card-foot {
+  margin-top: 0.12rem;
+  gap: 0.15rem 0.5rem;
+}
+
+.level-card--compact .level-card-foot .muted {
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+/* Tarjetas de sede — inspector home */
+.inspector-home .site-picker-card-clean {
+  position: relative;
+  overflow: hidden;
+  gap: 0.45rem;
+  padding: 1rem 1.05rem 0.95rem;
+  border-radius: calc(var(--radius) + 4px);
+  background:
+    linear-gradient(155deg, var(--primary-container) 0%, transparent 42%),
+    linear-gradient(180deg, var(--surface-container-high, var(--surface-container)) 0%, var(--card) 100%);
+  box-shadow: var(--elevation-1);
+  transition:
+    transform 0.22s var(--ease-out),
+    box-shadow 0.22s var(--ease-out),
+    border-color 0.22s var(--ease-out);
+}
+
+.inspector-home .site-picker-card-clean::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+  opacity: 0.55;
+  transition: opacity 0.22s var(--ease-out);
+}
+
+.inspector-home .site-picker-card-clean:hover {
+  transform: translateY(-3px);
+  border-color: rgba(79, 70, 229, 0.35);
+  box-shadow: var(--elevation-2);
+}
+
+.inspector-home .site-picker-card-clean:hover::before {
+  opacity: 1;
+}
+
+.inspector-home .site-picker-level {
+  display: inline-flex;
+  align-self: flex-start;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.18rem 0.55rem;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.inspector-home .site-picker-card-clean h3 {
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  padding-right: 0.5rem;
+}
+
+.inspector-home .site-picker-address {
+  padding-left: 1.15rem;
+  position: relative;
+  line-height: 1.35;
+}
+
+.inspector-home .site-picker-address::before {
+  content: "📍";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  opacity: 0.85;
+}
+
+.inspector-home .site-picker-stats-row {
+  margin-top: 0.35rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border);
+}
+
+.inspector-home .site-picker-cta {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.3rem;
+  margin-top: 0.45rem;
+  padding: 0.32rem 0.75rem;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--primary-container);
+  color: var(--on-primary-container, var(--primary));
+  font-size: 0.78rem;
+  font-weight: 800;
+  transition: background 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+
+.inspector-home .site-picker-cta::after {
+  content: "→";
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+.inspector-home .site-picker-card-clean:hover .site-picker-cta {
+  background: var(--primary);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.inspector-home .site-picker-new {
+  display: inline-flex;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--surface-variant);
+  font-style: italic;
+}
+
+/* Medallas */
+.medals {
   margin-top: 0.5rem;
 }
 
-.achievements-head {
+.medals-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -927,7 +1093,7 @@
   margin-bottom: 0.6rem;
 }
 
-.achievements-count {
+.medals-count {
   font-size: 0.78rem;
   font-weight: 800;
   padding: 0.1rem 0.55rem;
@@ -936,7 +1102,24 @@
   color: var(--on-secondary-container);
 }
 
-.achievement-grid {
+.medals-section {
+  margin-bottom: 1.25rem;
+}
+
+.medals-section:last-child {
+  margin-bottom: 0;
+}
+
+.medals-section-title {
+  margin: 0 0 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.medal-grid {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -945,7 +1128,7 @@
   gap: 0.6rem;
 }
 
-.achievement-badge {
+.medal-card {
   display: flex;
   align-items: flex-start;
   gap: 0.65rem;
@@ -953,25 +1136,21 @@
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--surface-container);
-  transition: box-shadow 0.2s var(--ease-out), transform 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  cursor: default;
+  user-select: none;
 }
 
-.achievement-badge.is-earned {
+.medal-card.is-earned {
   border-color: rgba(22, 163, 74, 0.4);
   background: linear-gradient(180deg, rgba(22, 163, 74, 0.1) 0%, var(--surface-container) 70%);
   box-shadow: var(--elevation-1);
 }
 
-.achievement-badge.is-earned:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--elevation-2);
-}
-
-.achievement-badge.is-locked {
+.medal-card.is-locked {
   opacity: 0.72;
 }
 
-.achievement-icon {
+.medal-icon {
   flex-shrink: 0;
   width: 2.2rem;
   height: 2.2rem;
@@ -982,24 +1161,24 @@
   background: var(--surface-variant);
 }
 
-.achievement-badge.is-earned .achievement-icon {
+.medal-card.is-earned .medal-icon {
   background: rgba(22, 163, 74, 0.18);
 }
 
-.achievement-text {
+.medal-text {
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
   min-width: 0;
 }
 
-.achievement-title {
+.medal-title {
   font-size: 0.86rem;
   font-weight: 700;
   line-height: 1.2;
 }
 
-.achievement-progress {
+.medal-progress {
   display: block;
   height: 5px;
   margin-top: 0.35rem;
@@ -1008,10 +1187,16 @@
   overflow: hidden;
 }
 
-.achievement-progress-fill {
+.medal-progress-fill {
   display: block;
   height: 100%;
   border-radius: 999px;
   background: var(--gradient-accent);
   transition: width 0.5s var(--ease-out);
+}
+
+/* Página dedicada de medallas */
+.medals-page-summary {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
 }

@@ -2481,6 +2481,11 @@ body {
   line-height: 1;
 }
 
+.navlink-icon-medal {
+  display: block;
+  color: inherit;
+}
+
 .mobile-nav {
   display: none;
 }

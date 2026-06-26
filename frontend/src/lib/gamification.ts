@@ -1,5 +1,5 @@
 /**
- * Capa de gamificación transversal: niveles, XP y logros.
+ * Capa de gamificación transversal: niveles, XP y medallas.
  *
  * El objetivo es dar una lectura de "progreso de juego" a cualquier rol
  * (inspector, empresa, experto) a partir de métricas reales de la operación.
@@ -89,8 +89,19 @@ export type Achievement = {
   title: string
   description: string
   earned: boolean
-  /** Progreso opcional para logros con meta numérica. */
+  /** Progreso opcional para medallas con meta numérica. */
   progress?: { current: number; target: number }
+}
+
+/** Alias de UI: medalla = logro de gamificación. */
+export type Medal = Achievement
+
+export function inspectorMedals(m: InspectorMetrics): Medal[] {
+  return inspectorAchievements(m)
+}
+
+export function companyMedals(m: CompanyMetrics): Medal[] {
+  return companyAchievements(m)
 }
 
 export type InspectorMetrics = {

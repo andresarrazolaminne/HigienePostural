@@ -6,12 +6,14 @@ type Props = {
   roleLabel?: string
   /** Texto contextual bajo la barra (ej. "12 evidencias"). */
   meta?: string
+  /** Versión más baja para el home del inspector. */
+  compact?: boolean
 }
 
-export function LevelProgress({ level, roleLabel, meta }: Props) {
+export function LevelProgress({ level, roleLabel, meta, compact }: Props) {
   const pct = Math.round(level.progress * 100)
   return (
-    <div className="level-card">
+    <div className={`level-card${compact ? " level-card--compact" : ""}`}>
       <div className="level-card-badge" aria-hidden>
         <span className="level-card-badge-num">{level.level}</span>
         <span className="level-card-badge-tag">NVL</span>

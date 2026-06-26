@@ -11,12 +11,14 @@ import { AdminSitesPage } from "./pages/admin/AdminSitesPage"
 import { AdminUsersPage } from "./pages/admin/AdminUsersPage"
 import { CompanyDashboardPage } from "./pages/company/CompanyDashboardPage"
 import { CompanyLayout } from "./pages/company/CompanyLayout"
+import { CompanyMedalsPage } from "./pages/company/CompanyMedalsPage"
 import { CompanyReportsPage } from "./pages/company/CompanyReportsPage"
 import { SiteReportPage } from "./pages/reports/SiteReportPage"
 import { CompanySitesPage } from "./pages/company/CompanySitesPage"
 import { CompanyUsersPage } from "./pages/company/CompanyUsersPage"
 import { InspectorHome } from "./pages/inspector/InspectorHome"
 import { InspectorLayout } from "./pages/inspector/InspectorLayout"
+import { InspectorMedalsPage } from "./pages/inspector/InspectorMedalsPage"
 import { InspectorMission } from "./pages/inspector/InspectorMission"
 import { ExpertLayout } from "./pages/expert/ExpertLayout"
 import { ExpertReviewPage } from "./pages/expert/ExpertReviewPage"
@@ -67,6 +69,7 @@ export default function App() {
             </Route>
             <Route path="empresa" element={<CompanyLayout />}>
               <Route index element={<CompanyDashboardPage />} />
+              <Route path="medallas" element={<CompanyMedalsPage />} />
               <Route path="usuarios" element={<CompanyUsersPage />} />
               <Route path="sedes" element={<CompanySitesPage />} />
               <Route path="sedes/:siteId/informe" element={<SiteReportPage />} />
@@ -78,6 +81,7 @@ export default function App() {
             </Route>
             <Route path="app" element={<InspectorLayout />}>
               <Route index element={<InspectorHome />} />
+              <Route path="medallas" element={<InspectorMedalsPage />} />
               <Route path="inspeccion/:siteId" element={<InspectorMission />} />
             </Route>
           </Route>
